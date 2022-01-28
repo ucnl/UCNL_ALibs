@@ -23,9 +23,10 @@ void UCNL_STR_WriteByte(byte* buffer, byte* srcIdx, byte c)
   (*srcIdx)++;
 }
 
-void UCNL_STR_WriteIntDec(byte* buffer, byte* srcIdx, int src, byte zPad)
+void UCNL_STR_WriteIntDec(byte* buffer, byte* srcIdx, long src, byte zPad)
 {
-  int x = src, len = 0, i;
+  long x = src;
+  int len = 0, i;
 
   do {
     x /= 10;
@@ -61,9 +62,10 @@ void UCNL_STR_WriteFloat(byte* buffer, byte* srcIdx, float f, byte dPlaces, byte
     ff = -f;
   }
 
-  int dec = (int)ff, mult = 1, i;
+  long dec = (long)ff, mult = 1;
+  int i;
   for (i = 0; i < dPlaces; i++) mult *= 10;
-  int frac = (int)((ff - dec) * (float)mult);
+  long frac = (long)((ff - dec) * (float)mult);
 
   UCNL_STR_WriteIntDec(buffer, srcIdx, dec, zPad);
   UCNL_STR_WriteByte(buffer, srcIdx, '.');
@@ -89,7 +91,6 @@ void UCNL_STR_WriteHexByte(byte* buffer, byte* srcIdx, byte c)
   (*srcIdx)++;
 }
 
-
 void UCNL_STR_WriteHexArray(byte* buffer, byte* srcIdx, byte* src, byte srcSize)
 {
   int i;
@@ -98,7 +99,7 @@ void UCNL_STR_WriteHexArray(byte* buffer, byte* srcIdx, byte* src, byte srcSize)
     UCNL_STR_WriteHexByte(buffer, srcIdx, src[i]);
 }
 
-void UCNL_STR_Str_WriteHexStr(byte* buffer, byte* srcIdx, byte* src, byte srcSize)
+void UCNL_STR_WriteHexStr(byte* buffer, byte* srcIdx, byte* src, byte srcSize)
 {
   int i;
   for (i = 0; i < srcSize; i++)
@@ -148,7 +149,7 @@ float UCNL_STR_ParseFloat(const byte* buffer, byte stIdx, byte ndIdx)
   return result * sign;
 }
 
-int UCNL_STR_ParseIntDec(const byte* buffer, byte stIdx, byte ndIdx)
+long UCNL_STR_ParseIntDec(const byte* buffer, byte stIdx, byte ndIdx)
 {
   byte i;
   int sign = 1;
@@ -159,8 +160,8 @@ int UCNL_STR_ParseIntDec(const byte* buffer, byte stIdx, byte ndIdx)
     stIdx++;
   }
 
-  int result = 0;
-  int multiplier = 1;
+  long result = 0;
+  long multiplier = 1;
 
   for (i = ndIdx; i >= stIdx; i--)
   {

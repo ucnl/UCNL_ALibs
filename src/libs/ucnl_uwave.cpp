@@ -350,7 +350,7 @@ bool uWAVE_Parse_PT_FAILED(uWAVE_PT_PACKET_Struct* rdata, const byte* buffer, by
 
 bool uWAVE_Parse_PT_DLVRD(uWAVE_PT_PACKET_Struct* rdata, const byte* buffer, byte idx)
 {
-  // $PUWVI,tareget_ptAddress,[azimuth],triesTaken,dataPacket
+  // $PUWVI,tareget_ptAddress,triesTaken,[azimuth],dataPacket
   byte stIdx = 0, ndIdx = 0, pIdx = 0;
   bool result = true, isNotLastParam;
 
@@ -366,17 +366,17 @@ bool uWAVE_Parse_PT_DLVRD(uWAVE_PT_PACKET_Struct* rdata, const byte* buffer, byt
           rdata->ptAddress = (byte)UCNL_STR_ParseIntDec(buffer, stIdx, ndIdx);
         break;
       case 2:
+        if (ndIdx < stIdx)
+          result = false;
+        else
+          rdata->tries = (byte)UCNL_STR_ParseIntDec(buffer, stIdx, ndIdx);
+        break;
+      case 3:
         if (ndIdx > stIdx)
         {
           rdata->isAzimuth = true;
           rdata->azimuth = UCNL_STR_ParseFloat(buffer, stIdx, ndIdx);
         }
-        break;
-      case 3:
-        if (ndIdx < stIdx)
-          result = false;
-        else
-          rdata->tries = (byte)UCNL_STR_ParseIntDec(buffer, stIdx, ndIdx);
         break;
       case 4:
         if ((ndIdx < stIdx) || (UCNL_STR_ReadHexStr(buffer, stIdx, ndIdx, rdata->dataPacket, uWAVE_PKT_MAX_SIZE, &(rdata->dataPacketSize)) != 0))
@@ -687,7 +687,7 @@ void uWAVE_Build_SETTINGS_WRITE(uWAVE_SETTINGS_WRITE_Struct* sdata, byte* buffer
   UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_PAR_SEP);
   UCNL_STR_WriteIntDec( buffer, idx, sdata->isACKOnTXFinished, 0);
   UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_PAR_SEP);
-  UCNL_STR_WriteFloat(  buffer, idx, sdata->gravityAcc, 0, 4);
+  UCNL_STR_WriteFloat(  buffer, idx, sdata->gravityAcc, 4, 0);
   UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_CHK_SEP);
   UCNL_STR_WriteHexByte(buffer, idx, 0);
   UCNL_STR_WriteStr(    buffer, idx, (byte*)"\r\n");
@@ -777,9 +777,7 @@ void uWAVE_Build_PT_SEND(uWAVE_PT_PACKET_Struct* sdata, byte* buffer, byte buffe
   UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_PAR_SEP);
   UCNL_STR_WriteIntDec( buffer, idx, sdata->tries, 0);
   UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_PAR_SEP);
-  UCNL_STR_WriteIntDec( buffer, idx, sdata->ptAddress, 0);
-  UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_PAR_SEP);
-  UCNL_STR_WriteHexStr( buffer, idx, sdata->dataPacket, sdata->dataPacketSize);
+  UCNL_STR_WriteHexArray( buffer, idx, sdata->dataPacket, sdata->dataPacketSize);
   UCNL_STR_WriteByte(   buffer, idx, UCNL_NMEA_CHK_SEP);
   UCNL_STR_WriteHexByte(buffer, idx, 0);
   UCNL_STR_WriteStr(    buffer, idx, (byte*)"\r\n");

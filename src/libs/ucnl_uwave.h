@@ -38,7 +38,7 @@ hello@unavlab.com
 
 #define IC_H2D_PT_SEND             'G'        // $PUWVG,tareget_ptAddress,[maxTries],dataPacket
 #define IC_D2H_PT_FAILED           'H'        // $PUWVH,tareget_ptAddress,triesTaken,dataPacket
-#define IC_D2H_PT_DLVRD            'I'        // $PUWVI,tareget_ptAddress,triesTaken,dataPacket
+#define IC_D2H_PT_DLVRD            'I'        // $PUWVI,tareget_ptAddress,triesTaken,[azimuth],dataPacket
 #define IC_D2H_PT_RCVD             'J'        // $PUWVJ,sender_ptAddress,dataPacket
 
 #define IC_H2D_PT_ITG              'K'        // $PUWVK,target_ptAddress,pt_itg_dataID
@@ -69,10 +69,11 @@ hello@unavlab.com
 #define uWAVE_NMEA_UWVJ_SNT_ID     (0x5557564A)
 #define uWAVE_NMEA_UWVL_SNT_ID     (0x5557564C)
 #define uWAVE_NMEA_UWVM_SNT_ID     (0x5557564D)
-#define uWAVE_NMEA_UWVI_SNT_ID     (0x5557564F)
+#define uWAVE_NMEA_UWVO_SNT_ID     (0x5557564F)
 #define uWAVE_NMEA_UWV_EXCL_SNT_ID (0x55575621)
 
 #define uWAVE_PKT_MAX_SIZE         (64)
+#define uWAVE_PKT_BCAST_ADDR       (255)
 
 
 typedef enum uWAVE_AQPNG_Mode_Enum

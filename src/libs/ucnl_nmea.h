@@ -4,6 +4,7 @@ All rights reserved.
 
 www.unavlab.com
 hello@unavlab.com
+
 */
 
 #ifndef _UCNL_NMEA_

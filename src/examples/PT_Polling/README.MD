@@ -1,4 +1,4 @@
-* uWave Packet mode polling
+# uWave Packet mode polling
 
 A project to demonstrate the transmission of telemetry information within the packet mode from several remote subscribers using one base station.
 

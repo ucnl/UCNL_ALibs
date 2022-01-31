@@ -1,3 +1,29 @@
+/*
+Copyright (C) 2021, Underwater communication & navigation laboratory
+All rights reserved.
+
+www.unavlab.com
+hello@unavlab.com
+
+*/
+
+/*  The sketch determines its location by the GPS receiver, requests the 
+ *  remote modem when a reaction to the modem occurs, and determines 
+ *  the location of the remote modem by measuring the difference in depth, 
+ *  water temperature, and signal propagation time. 
+ *  A virtual long-baseline technique is used when ranges to a stationary 
+ *  remote modem are measured from different geographic locations.
+ *  
+ *  uWave modem is connected to an Arduino MEGA board as follows:
+ *  
+ *  GNSS               -> Arduino Serial1
+ *  uWave              -> Arduino Serial2
+ *  uWave CMD/SVC wire -> UWAVE_CMD_PIN
+ *  
+ *  20х4 LCD is an optional feature (comment USE_LCD define if you do not need one)
+ * 
+ */
+
 #include "ucnl_str.h"
 #include "ucnl_nmea.h"
 #include "ucnl_uwave.h"
